@@ -7,13 +7,24 @@ zápočtový program
 letní semestr 2022/23
 Předmět: NPRG031 Programování 2
 """
+import tkinter as tk
+from tkinter import ttk
+import datetime # for _calendar.py
+from _calendar import Calendar
+from _register import Register
+
+
+
 def main(): 
-    import tkinter as tk
     root=tk.Tk()#screenName="okno")
+    calendar = Calendar(root)
+    register = Register(root)
+    
+    register.main_frame.pack(side="left", fill="both", expand=True)
+    calendar.main_frame.pack(side="right", fill="both", expand=True)
     root.state('zoomed') 
     root.title('Manager')
-
-
+    """"
     # Configure column weight for relative width
     root.grid_columnconfigure(0, weight=1)
 
@@ -65,7 +76,7 @@ def main():
 
     def button_clicked():
         print("Button clicked!")
-
+"""
     root.mainloop()
 
 
