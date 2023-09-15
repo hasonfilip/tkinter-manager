@@ -1,7 +1,7 @@
 # Tkinter manager
 
 Tkinter manager je jednoduchá aplikace určená k uchovávání přehledu o nadcházejících úkolech a
-událostech se zabudovaným kalendářem. Aplikace byla vytvořena jako zápočtový program k předmětu Programování 2 NPRG031.
+událostech se zabudovaným kalendářem. Aplikace byla vytvořena jako zápočtový program k předmětu Programování 2 NPRG031 za pomocí základního modulu k vytváření grafického rozhraní v jazyce python, Tkinter.
 
 ## Spuštění
 Ke spuštění aplikace spusťte soubor program.py. Tento soubor z původní složky nepřesouvejte. Pokud

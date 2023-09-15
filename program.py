@@ -289,7 +289,8 @@ class Task:
         self.config_day_button()
         
 
-    def adjust_date(self, date):
+    def adjust_date(self, date): # date format is int(yyyymmdd), thus if we want to get the index of the button in the list of buttons 
+                                 # using this number, we need to subtract redundance and add the number of buttons in the previous months
         if date>=100 and date<=130:
             date = date - 100 + number_of_top_buttons
         elif date>=200 and date<=230:
@@ -424,9 +425,7 @@ class Register:
             task.frame.destroy() # destroy frame
             self.tasks.remove(task) # remove from list
 
-            self.sort_tasks()
-
-            
+            self.sort_tasks()            
             self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all")) # update scrollregion
 
     def sort_tasks(self):
@@ -473,14 +472,14 @@ class Calendar:
         current_year=datetime.datetime.now().year
         current_month=datetime.datetime.now().month  # 1-12
 
-        year_addition_in_two_months=0
-        year_addition_in_one_month=0
+        year_addition_in_one_month=0  # number of years to add to the year of the middle month
+        year_addition_in_two_months=0 # number of years to add to the year of the bottom month        
         if current_month>=11:
             if current_month==12:
                 year_addition_in_one_month=1
             year_addition_in_two_months=1
 
-        self.year_for_top=current_year
+        self.year_for_top=current_year  # years of corresponding months shown on the calendar
         self.month_for_top=current_month
         self.year_for_mid=current_year + year_addition_in_one_month
         self.month_for_mid=((current_month)%12)+1
@@ -578,7 +577,7 @@ class Calendar:
             last_day+=10000
         else: last_day+=100
 
-        self.month_for_top=((self.month_for_top)%12)+1
+        self.month_for_top = ((self.month_for_top)%12)+1
         self.month_for_mid=((self.month_for_mid)%12)+1
         self.month_for_bot=((self.month_for_bot)%12)+1
 
