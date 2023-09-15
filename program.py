@@ -71,7 +71,7 @@ def on_closing(tasks:list, root, close=True):
     list = []
     for task in tasks:
         list.append([task.creation_date, task.deadline, task.title, task.urgency, task.notes])
-    json_save(list, "data/tasks.json")
+    json_save(list, "tasks.json")
     if close:
         root.destroy()
 
@@ -309,7 +309,7 @@ class Task:
             date = self.adjust_date(self.deadline-first_day)
             if date>=shift and date<=stop:
                 buttons[date].config(bg=colors[self.urgency], command=lambda: self.open_task())
-                ToolTip.CreateToolTip(buttons[date], self.title)
+                ToolTip.create_tool_tip(buttons[date], self.title)
 
     def unconfig_day_button(self):
         """Unconfigures the button of the day the task is on"""
@@ -393,7 +393,7 @@ class Register:
 
     def load_tasks(self):
         """Loads tasks from a json file and creates them again"""
-        list = json_load("data/tasks.json")
+        list = json_load("tasks.json")
         for task in list:
             self.create_new_task(task[0], task[1], task[2], task[3], task[4], self.delete)
         self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all"))
@@ -473,44 +473,44 @@ class Calendar:
         current_year=datetime.datetime.now().year
         current_month=datetime.datetime.now().month  # 1-12
 
-        yearAdditionInTwoMonths=0
-        yearAdditionInOneMonth=0
+        year_addition_in_two_months=0
+        year_addition_in_one_month=0
         if current_month>=11:
             if current_month==12:
-                yearAdditionInOneMonth=1
-            yearAdditionInTwoMonths=1
+                year_addition_in_one_month=1
+            year_addition_in_two_months=1
 
         self.year_for_top=current_year
         self.month_for_top=current_month
-        self.year_for_mid=current_year + yearAdditionInOneMonth
+        self.year_for_mid=current_year + year_addition_in_one_month
         self.month_for_mid=((current_month)%12)+1
-        self.year_for_bot=current_year + yearAdditionInTwoMonths
+        self.year_for_bot=current_year + year_addition_in_two_months
         self.month_for_bot=((current_month+1)%12)+1
 
         first_day = 100*self.month_for_top+10000*self.year_for_top+1
         last_day = 100*self.month_for_bot+10000*self.year_for_bot+32
 
-        up_button=tk.Button(self.main_frame, image=self.up_image, width=32, height=16, command=self.scrollUp)
+        up_button=tk.Button(self.main_frame, image=self.up_image, width=32, height=16, command=self.scroll_up)
         up_button.pack(side="top", pady=(5,0))
 
         self.calendar_frame=tk.Frame(self.main_frame)
         self.calendar_frame.pack(side="top")
 
-        down_button=tk.Button(self.main_frame, image=self.down_image, width=32, height=16, command=self.scrollDown)
+        down_button=tk.Button(self.main_frame, image=self.down_image, width=32, height=16, command=self.scroll_down)
         down_button.pack(side="top", pady=(5,0))
 
-        self.topM_frame=tk.Frame(self.calendar_frame)
-        self.topM_frame.pack(side="top")
+        self.top_month_frame=tk.Frame(self.calendar_frame)
+        self.top_month_frame.pack(side="top")
 
-        self.midM_frame=tk.Frame(self.calendar_frame)
-        self.midM_frame.pack(side="top")
+        self.mid_month_frame=tk.Frame(self.calendar_frame)
+        self.mid_month_frame.pack(side="top")
 
-        self.botM_frame=tk.Frame(self.calendar_frame)
-        self.botM_frame.pack(side="top")
+        self.bot_month_frame=tk.Frame(self.calendar_frame)
+        self.bot_month_frame.pack(side="top")
 
-        self.top_buttons=self.makeMonth(self.topM_frame,current_year,current_month)
-        self.mid_buttons=self.makeMonth(self.midM_frame,current_year+yearAdditionInOneMonth,((current_month)%12)+1)
-        self.bot_buttons=self.makeMonth(self.botM_frame,current_year+yearAdditionInTwoMonths,((current_month+1)%12)+1)
+        self.top_buttons=self.make_month(self.top_month_frame,current_year,current_month)
+        self.mid_buttons=self.make_month(self.mid_month_frame,current_year+year_addition_in_one_month,((current_month)%12)+1)
+        self.bot_buttons=self.make_month(self.bot_month_frame,current_year+year_addition_in_two_months,((current_month+1)%12)+1)
 
         buttons = self.top_buttons + self.mid_buttons + self.bot_buttons
         number_of_top_buttons = len(self.top_buttons)
@@ -518,7 +518,7 @@ class Calendar:
         number_of_bot_buttons = len(self.bot_buttons)
 
 
-    def makeMonth(self, parent:tk.Frame, year:int, month:int) -> list:
+    def make_month(self, parent:tk.Frame, year:int, month:int) -> list:
         """Creates a month with buttons for each day and returns a list of those buttons"""
         global months, days
         label = tk.Label(parent, text=months[month-1]+" "+str(year), width=11, height=1, border=1, relief="solid")
@@ -539,19 +539,19 @@ class Calendar:
 
         if month==2:
             if (year%4 == 0) and ((year%100 != 0) or (year%400 == 0)):
-                numberOfDays=29
+                number_of_days=29
             else:
-                numberOfDays=28
+                number_of_days=28
         elif (month<8 and (month%2) == 1) or (month>=8 and (month%2) == 0):
-            numberOfDays=31
+            number_of_days=31
         else:
-            numberOfDays=30       
+            number_of_days=30       
 
         today_is_in_this_month = False
         if datetime.datetime.now().year == year and datetime.datetime.now().month == month:
             today_is_in_this_month = True
 
-        for i in range(numberOfDays):            
+        for i in range(number_of_days):            
             day_number=first_day_of_month+i
             day_button = tk.Button(days_frame, text=str(i+1), width=2, height=1)      
             day_button.grid(row=2+(day_number//7), column=day_number%7, padx=0, pady=0) 
@@ -564,7 +564,7 @@ class Calendar:
         return day_buttons       
 
     
-    def scrollDown(self) -> None:  
+    def scroll_down(self) -> None:  
         """Scrolls the calendar down by one month"""
         global first_day, last_day, buttons, number_of_top_buttons, number_of_mid_buttons, number_of_bot_buttons
         if self.month_for_top==12:
@@ -582,17 +582,17 @@ class Calendar:
         self.month_for_mid=((self.month_for_mid)%12)+1
         self.month_for_bot=((self.month_for_bot)%12)+1
 
-        self.topM_frame.destroy()
-        self.topM_frame=tk.Frame(self.calendar_frame)
-        self.topM_frame=self.midM_frame
+        self.top_month_frame.destroy()
+        self.top_month_frame=tk.Frame(self.calendar_frame)
+        self.top_month_frame=self.mid_month_frame
         self.top_buttons=self.mid_buttons
-        self.midM_frame=self.botM_frame
+        self.mid_month_frame=self.bot_month_frame
         self.mid_buttons=self.bot_buttons
-        self.botM_frame=tk.Frame(self.calendar_frame)       
-        self.bot_buttons=self.makeMonth(self.botM_frame,self.year_for_bot,self.month_for_bot)
-        self.topM_frame.pack(side="top", padx=0, pady=0)
-        self.midM_frame.pack(side="top", padx=0, pady=0)
-        self.botM_frame.pack(side="top", padx=0, pady=0)
+        self.bot_month_frame=tk.Frame(self.calendar_frame)       
+        self.bot_buttons=self.make_month(self.bot_month_frame,self.year_for_bot,self.month_for_bot)
+        self.top_month_frame.pack(side="top", padx=0, pady=0)
+        self.mid_month_frame.pack(side="top", padx=0, pady=0)
+        self.bot_month_frame.pack(side="top", padx=0, pady=0)
 
         buttons = self.top_buttons + self.mid_buttons + self.bot_buttons
         number_of_top_buttons = len(self.top_buttons)
@@ -601,11 +601,11 @@ class Calendar:
 
         self.register.update(number_of_bot_buttons)
 
-    def scrollUp(self) -> None:
+    def scroll_up(self) -> None:
         """Scrolls the calendar up by one month"""
         global first_day, last_day, buttons, number_of_top_buttons, number_of_mid_buttons, number_of_bot_buttons
-        self.topM_frame.pack_forget() # for some reason packing must be forgotten here, unlike in scrollDown()
-        self.midM_frame.pack_forget()
+        self.top_month_frame.pack_forget() # for some reason packing must be forgotten here, unlike in scrollDown()
+        self.mid_month_frame.pack_forget()
 
         self.month_for_top=((self.month_for_top-2)%12)+1
         self.month_for_mid=((self.month_for_mid-2)%12)+1
@@ -622,17 +622,17 @@ class Calendar:
             last_day-=10000
         else: last_day-=100
 
-        self.botM_frame.destroy()
-        self.botM_frame=tk.Frame(self.calendar_frame)
-        self.botM_frame=self.midM_frame
+        self.bot_month_frame.destroy()
+        self.bot_month_frame=tk.Frame(self.calendar_frame)
+        self.bot_month_frame=self.mid_month_frame
         self.bot_buttons=self.mid_buttons
-        self.midM_frame=self.topM_frame
+        self.mid_month_frame=self.top_month_frame
         self.mid_buttons=self.top_buttons
-        self.topM_frame=tk.Frame(self.calendar_frame)
-        self.top_buttons=self.makeMonth(self.topM_frame,self.year_for_top,self.month_for_top)
-        self.topM_frame.pack(side="top", padx=0, pady=0)
-        self.midM_frame.pack(side="top", padx=0, pady=0)
-        self.botM_frame.pack(side="top", padx=0, pady=0)
+        self.top_month_frame=tk.Frame(self.calendar_frame)
+        self.top_buttons=self.make_month(self.top_month_frame,self.year_for_top,self.month_for_top)
+        self.top_month_frame.pack(side="top", padx=0, pady=0)
+        self.mid_month_frame.pack(side="top", padx=0, pady=0)
+        self.bot_month_frame.pack(side="top", padx=0, pady=0)
 
         buttons = self.top_buttons + self.mid_buttons + self.bot_buttons
         number_of_top_buttons = len(self.top_buttons)
@@ -648,7 +648,7 @@ class ToolTip(object):
         self.id = None
         self.x = self.y = 0
 
-    def showtip(self, text):
+    def show_tip(self, text):
         "Display text in tooltip window"
         self.text = text
         if self.tipwindow or not self.text:
@@ -664,26 +664,26 @@ class ToolTip(object):
                       font=("tahoma", "8", "normal"))
         label.pack(ipadx=1)
 
-    def hidetip(self):
+    def hide_tip(self):
         tw = self.tipwindow
         self.tipwindow = None
         if tw:
             tw.destroy()
 
     @classmethod
-    def CreateToolTip(cls, widget, text):
-        toolTip = cls(widget) 
+    def create_tool_tip(cls, widget, text):
+        tool_tip = cls(widget) 
         def enter(event):
-            toolTip.showtip(text)
+            tool_tip.show_tip(text)
         def leave(event):
-            toolTip.hidetip()
+            tool_tip.hide_tip()
         widget.bind('<Enter>', enter)
         widget.bind('<Leave>', leave)
 
-    def DeleteToolTip(self, widget):
+    def delete_tool_tip(self, widget):
         widget.unbind('<Enter>')
         widget.unbind('<Leave>')
-        self.hidetip()
+        self.hide_tip()
 
 
 if __name__ == '__main__':
