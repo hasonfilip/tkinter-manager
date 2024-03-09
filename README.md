@@ -10,8 +10,5 @@ which creates a script that runs the application directly. You can move it to an
 place.
 
 ## List of dependencies:
-• tkinter \
-• datetime \
-• json \
-• platform \
-• os
+• python ^3.5 \
+• tkinter
