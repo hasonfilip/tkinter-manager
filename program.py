@@ -20,12 +20,9 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
-# months = ["January", "February", "March", "April", "May", 
-#           "June", "July", "August", "September", "October", "November", "December"]
-months = ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
-          "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"]
-# days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
-days = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"]
+months = ["January", "February", "March", "April", "May", 
+           "June", "July", "August", "September", "October", "November", "December"]
+days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 buttons = []
 number_of_top_buttons = 0
@@ -476,7 +473,7 @@ class Calendar:
         self.up_image = tk.PhotoImage(file="icons/arrow_up.png")
         self.down_image = tk.PhotoImage(file="icons/arrow_down.png")
 
-        main_label=tk.Label(self.main_frame, text="Kalendář", width=12, height=2, border=1, relief="solid")
+        main_label=tk.Label(self.main_frame, text="Calendar", width=12, height=2, border=1, relief="solid")
         main_label.pack(side="top")
 
         current_year=datetime.datetime.now().year
@@ -530,7 +527,7 @@ class Calendar:
     def make_month(self, parent:tk.Frame, year:int, month:int) -> list:
         """Creates a month with buttons for each day and returns a list of those buttons"""
         global months, days
-        label = tk.Label(parent, text=months[month-1]+" "+str(year), width=11, height=1, border=1, relief="solid")
+        label = tk.Label(parent, text=months[month-1]+" "+str(year), width=12, height=1, border=1, relief="solid")
         label.pack(side="top", padx=0, pady=5)
 
         labels_frame=tk.Frame(parent, borderwidth=1, relief="solid")
