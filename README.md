@@ -1,15 +1,15 @@
 # Tkinter manager
 
-Tkinter manager je jednoduchá aplikace určená k uchovávání přehledu o nadcházejících úkolech a
-událostech se zabudovaným kalendářem. Aplikace byla vytvořena jako zápočtový program k předmětu Programování 2 NPRG031 za pomocí základního modulu k vytváření grafického rozhraní v jazyce python, Tkinter.
+Tkinter manager is a simple application designed to keep track of upcoming tasks and
+events with a built-in calendar. The application was created as a credit program for the subject Programming 2 NPRG031 using the basic module for creating a graphical interface in the python language, Tkinter.
 
-## Spuštění
-Ke spuštění aplikace spusťte soubor program.py. Tento soubor z původní složky nepřesouvejte. Pokud
-chcete mít možnost spustit aplikaci z jiného umístění (např. z plochy), spusťte soubor create_alias.py,
-jenž vytvoří script, jenž aplikaci spouští přímo. Ten můžete přesunout na libovolné, vámi určené
-místo.
+## Startup
+Run the program.py file to start the application. Do not move this file from its original folder. If
+if you want to be able to run the application from another location (eg from the desktop), run the create_alias.py file,
+which creates a script that runs the application directly. You can move it to any location you choose
+place.
 
-## Seznam závislostí:
+## List of dependencies:
 • tkinter \
 • datetime \
 • json \
