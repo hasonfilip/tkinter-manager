@@ -20,8 +20,11 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
+# months = ["January", "February", "March", "April", "May", 
+#           "June", "July", "August", "September", "October", "November", "December"]
 months = ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen",
           "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"]
+# days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 days = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"]
 
 buttons = []
@@ -75,6 +78,7 @@ def on_closing(tasks:list, root, close=True):
     if close:
         root.destroy()
 
+
 def json_save(data, filename):
     """Saves data to a json file"""
     try:
@@ -82,6 +86,7 @@ def json_save(data, filename):
             json.dump(data, file, indent=4)
     except Exception as e:
         print(f"An error occurred while saving to {filename}: {e}")    
+
 
 def json_load(filename): # is called in register.load_tasks()
     """Loads data from a json file"""
@@ -108,25 +113,18 @@ class Task:
         self.window_id = 0
         self.order = order
         self.delete_callback = delete_callback
-        self.frame_height = 100        
-
+        self.frame_height = 100       
         self.edit_image = edit_image
         self.delete_image = delete_image
-
         self.frame = tk.Frame(self.canvas_parent, borderwidth=1, relief="solid", height=self.frame_height)
         self.frame.pack_propagate(0) 
-
         self.left_frame = ttk.Frame(self.frame, borderwidth=1, relief="solid", height=100)
         self.left_frame.pack(side="left", padx=5, pady=5)
-
         self.title_label = tk.Label(self.left_frame, text=self.title, font=("Arial", 10))
         self.title_label.pack(side="left", padx=5, pady=5)
-        self.title_label.bind("<Button-1>", self.open_task)
-        
+        self.title_label.bind("<Button-1>", self.open_task)        
         self.edit_button = tk.Button(self.left_frame, image=self.edit_image, width=16, height=16, command=lambda: self.edit_title())
         self.edit_button.pack(side="right", padx=5, pady=5)
-
-
 
         mid_frame = tk.Frame(self.frame)
         mid_frame.pack(side="left", padx=5, pady=5, fill="both", expand=True)
@@ -137,17 +135,12 @@ class Task:
         self.content_sample.bind("<Button-1>", self.open_task)
         self.content_sample.pack(side="top", padx=5, pady=5, fill="x", expand=True)
         
-
         self.delete = None
         delete_button = tk.Button(self.frame, image=self.delete_image,width=16,height=16, command=lambda: self.delete())
         delete_button.pack(side="right", padx=(0,5), pady=5)
 
-
-
         right_frame = tk.Frame(self.frame, borderwidth=1, relief="solid")
         right_frame.pack(side="right", padx=5, pady=5)
-
-
 
         priority_options = [0,1,2,3]
 
@@ -159,7 +152,6 @@ class Task:
         prio_combobox.current(self.urgency)
         prio_combobox.bind("<<ComboboxSelected>>", lambda event: self.change_priority(prio_combobox.get()))
         prio_combobox.grid(row=0, column=1, padx=0, pady=5)
-
 
         deadline_frame = tk.Frame(right_frame)
         deadline_frame.grid(row=1, column=1, padx=0, pady=5)
@@ -190,6 +182,7 @@ class Task:
 
         self.config_day_button()
 
+          
     def open_task(self, event=None):
         """Opens a task in a new window"""
         global scroll_flag
@@ -203,7 +196,6 @@ class Task:
         self.headline.bind("<Button-1>", self.edit_title_within)
         self.headline.pack(side="top", padx=5, pady=(20,0))
 
-        
         self.notes_text = tk.Text(self.task_window,wrap="word", font=("Arial", 10))
         notes_scrollbar = tk.Scrollbar(self.task_window, command=self.notes_text.yview)
         self.notes_text.configure(yscrollcommand=notes_scrollbar.set)
@@ -211,6 +203,7 @@ class Task:
         self.notes_text.insert(tk.END, self.notes)
         self.notes_text.pack(side="top", padx=20, pady=20, fill="both", expand=True)
 
+          
     def close_task(self):
         """Closes the task window"""
         global scroll_flag
@@ -235,6 +228,7 @@ class Task:
         self.headline_entry.pack(side="top", padx=5, pady=(20,0))
         self.notes_text.pack(side="top", padx=20, pady=20, fill="both", expand=True)
 
+          
     def save_title_within(self, event=None):
         self.notes_text.pack_forget()
         self.title = self.headline_entry.get()
@@ -246,6 +240,7 @@ class Task:
         self.unconfig_day_button()
         self.config_day_button()
 
+          
     def edit_title(self, event=None):
         self.title_label.pack_forget()
         self.edit_button.pack_forget()
@@ -260,6 +255,7 @@ class Task:
         self.save_button = tk.Button(self.left_frame, text="OK", command=lambda: self.save_title(None))
         self.save_button.pack(side="right", padx=5, pady=5)
 
+          
     def save_title(self, event=None):
         self.title = self.title_entry.get()
         self.title_label.config(text=self.title)
@@ -270,11 +266,13 @@ class Task:
         self.unconfig_day_button()
         self.config_day_button()
 
+          
     def change_priority(self, priority):
         self.urgency = int(priority)
         self.unconfig_day_button()
         self.config_day_button()
 
+          
     def change_deadline(self, event):
         year = self.deadline_year.get()
         month = self.deadline_month.get()
@@ -301,6 +299,7 @@ class Task:
             date = date - 9000 + number_of_top_buttons + number_of_mid_buttons
         return date
 
+          
     def config_day_button(self, shift=0, stop=100):
         """Configures the button of the day the task is on"""
         colors = ["white", "yellow", "orange", "red"] 
@@ -312,6 +311,7 @@ class Task:
                 buttons[date].config(bg=colors[self.urgency], command=lambda: self.open_task())
                 ToolTip.create_tool_tip(buttons[date], self.title)
 
+          
     def unconfig_day_button(self):
         """Unconfigures the button of the day the task is on"""
         global buttons, first_day, last_day, basic_button_color
@@ -326,6 +326,7 @@ class Task:
 class InvalidDateException(Exception):
     pass
 
+
 def is_valid_date(year, month, day):
     try:
         year = int(year)
@@ -339,8 +340,7 @@ def is_valid_date(year, month, day):
 
     if day < 1 or day > 31: 
         raise InvalidDateException("Day must be 1-31")
-    
-    
+        
 
 class Register:
     global today
@@ -385,6 +385,7 @@ class Register:
         self.scrollbar.config(command=self.tasks_canvas.yview)
         self.scrollbar.pack(side="right", fill="y")
 
+          
     def on_mousewheel(self, event):
         """Scrolls the canvas with the mouse wheel"""
         global scroll_flag
@@ -394,13 +395,15 @@ class Register:
             elif platform.system() == "Windows":
                 self.tasks_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
+          
     def load_tasks(self):
         """Loads tasks from a json file and creates them again"""
         list = json_load("tasks.json")
         for task in list:
             self.create_new_task(task[0], task[1], task[2], task[3], task[4], self.delete)
         self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all"))
-        
+
+          
     def create_new_task(self, creation_day=today, deadline=today, title="Title", urgency=0, content="", delete_callback=None):
         """Creates a new task, places it on the canvas and adds it to the list of tasks"""
         new_task = Task(self.tasks_canvas, creation_day, deadline, title, urgency, content, len(self.tasks), self.delete_image, self.edit_image, delete_callback)
@@ -410,15 +413,18 @@ class Register:
         self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all"))
         self.sort_tasks()
 
+          
     def place(self, task:Task):
         """Places a task on the canvas"""
         task.delete = lambda: self.delete(task)
         task.window_id = self.tasks_canvas.create_window(10, 12+(task.frame_height+10)*task.order, window = task.frame, anchor = "nw", width = self.tasks_canvas.winfo_width()-20)
 
+          
     def remove(self, task:Task):
         """Removes a task from the canvas"""
         self.tasks_canvas.delete(task.window_id)
 
+          
     def delete(self, task:Task):
         """Deletes a task"""
         if messagebox.askokcancel('Confirmation','Are you sure you want to delete this task?'):
@@ -430,6 +436,7 @@ class Register:
             self.sort_tasks()            
             self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all")) # update scrollregion
 
+          
     def sort_tasks(self):
         """Sorts tasks according to the selected option"""
         for task in self.tasks:
@@ -452,6 +459,7 @@ class Register:
         self.tasks_canvas.configure(scrollregion=self.tasks_canvas.bbox("all"))
         self.tasks_canvas.update_idletasks()
 
+          
     def update(self, shift=0, stop=100):
         for task in self.tasks:
             task.config_day_button(shift, stop)
@@ -602,6 +610,7 @@ class Calendar:
 
         self.register.update(number_of_bot_buttons)
 
+          
     def scroll_up(self) -> None:
         """Scrolls the calendar up by one month"""
         global first_day, last_day, buttons, number_of_top_buttons, number_of_mid_buttons, number_of_bot_buttons
@@ -642,6 +651,7 @@ class Calendar:
 
         self.register.update(0, number_of_top_buttons)
 
+
 class ToolTip(object):
     def __init__(self, widget):
         self.widget = widget
@@ -649,6 +659,7 @@ class ToolTip(object):
         self.id = None
         self.x = self.y = 0
 
+          
     def show_tip(self, text):
         "Display text in tooltip window"
         self.text = text
@@ -665,12 +676,14 @@ class ToolTip(object):
                       font=("tahoma", "8", "normal"))
         label.pack(ipadx=1)
 
+          
     def hide_tip(self):
         tw = self.tipwindow
         self.tipwindow = None
         if tw:
             tw.destroy()
 
+          
     @classmethod
     def create_tool_tip(cls, widget, text):
         tool_tip = cls(widget) 
@@ -681,6 +694,7 @@ class ToolTip(object):
         widget.bind('<Enter>', enter)
         widget.bind('<Leave>', leave)
 
+          
     def delete_tool_tip(self, widget):
         widget.unbind('<Enter>')
         widget.unbind('<Leave>')
