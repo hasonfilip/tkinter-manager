@@ -3,8 +3,10 @@
 Tkinter manager is a simple application designed to keep track of upcoming tasks and
 events with a built-in calendar. The application was created as a credit program for the subject Programming 2 NPRG031 using the basic module for creating a graphical interface in the python language, Tkinter.
 
+<!--- 
 ## 
-![alt text](https://arkahcuk.github.io/obrázek_2024-04-04_102723351.png)
+![alt text](https://arkahcuk.github.io/obrázek_2024-04-04_102723351.png) 
+-->
 
 ## Startup
 Run the program.py file to start the application. Do not move this file from its original folder. If
