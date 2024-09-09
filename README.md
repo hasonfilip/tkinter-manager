@@ -5,7 +5,7 @@ events with a built-in calendar. The application was created as a credit program
 
 <!--- 
 ## 
-![alt text](https://arkahcuk.github.io/obrázek_2024-04-04_102723351.png) 
+![alt text](https://hasonfilip.github.io/obrázek_2024-04-04_102723351.png) 
 -->
 
 ## Startup
